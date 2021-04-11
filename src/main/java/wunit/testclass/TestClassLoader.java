@@ -39,8 +39,7 @@ public class TestClassLoader {
         for (File file : files) {
             if (file.isDirectory()) {
                 classes.addAll(findClasses(file, packageName + "." + file.getName()));
-            }
-            if (file.getName().endsWith(".class")) {
+            } else if (file.getName().endsWith(".class")) {
                 classes.add(Class.forName(packageName + "." + file.getName().substring(0, file.getName().length() - 6)));
             }
         }

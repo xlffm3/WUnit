@@ -7,7 +7,7 @@ public class Assertion {
 
     public static void assertTrue(boolean isTrue) {
         if (!isTrue) {
-            throw new AssertionFailureException();
+            throw new AssertionFailureException("True", "False");
         }
     }
 

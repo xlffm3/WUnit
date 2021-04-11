@@ -12,13 +12,13 @@ public class AssertionExceptionWrapper {
         if (runtimeException.getClass() == exceptionClass) {
             return this;
         }
-        throw new AssertionFailureException();
+        throw new AssertionFailureException(exceptionClass.getSimpleName(), runtimeException.getClass().getSimpleName());
     }
 
     public AssertionExceptionWrapper hasMessage(String message) {
         if (runtimeException.getMessage().equals(message)) {
             return this;
         }
-        throw new AssertionFailureException();
+        throw new AssertionFailureException(message, runtimeException.getMessage());
     }
 }

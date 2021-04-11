@@ -31,6 +31,7 @@ public class TestClass {
             LOGGER.info(TestStatus.PASSED.generateLogMessage(testClass.getSimpleName(), method.getName()));
         } catch (InvocationTargetException invocationTargetException) {
             LOGGER.info(TestStatus.FAILED.generateLogMessage(testClass.getSimpleName(), method.getName()));
+            LOGGER.info(invocationTargetException.getTargetException().getMessage());
         } catch (IllegalAccessException illegalAccessException) {
             LOGGER.info(TestStatus.IGNORED.generateLogMessage(testClass.getSimpleName(), method.getName()));
         }

@@ -25,11 +25,29 @@ public class NumberControllerTest {
     }
 
     @Test
-    public static void validateIndex() {
+    public static void indexOutOfBoundsException() {
         List<Integer> list = new ArrayList<>();
 
         Assertion.assertThatCode(() -> list.get(1))
                 .isInstanceOf(IndexOutOfBoundsException.class)
                 .hasMessage("Index: 1, Size: 0");
+    }
+
+    @Test
+    public static void wrongException() {
+        List<Integer> list = new ArrayList<>();
+
+        Assertion.assertThatCode(() -> list.get(1))
+                .isInstanceOf(ArithmeticException.class)
+                .hasMessage("Index: 1, Size: 0");
+    }
+
+    @Test
+    public static void wrongExceptionMessage() {
+        List<Integer> list = new ArrayList<>();
+
+        Assertion.assertThatCode(() -> list.get(1))
+                .isInstanceOf(IndexOutOfBoundsException.class)
+                .hasMessage("Index: 1, Size: 31");
     }
 }
