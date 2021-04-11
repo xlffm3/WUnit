@@ -1,4 +1,4 @@
-package wunit.testcase;
+package wunit.testclass;
 
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
@@ -12,7 +12,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class TestCasesTest {
+class TestClassTest {
 
     @DisplayName("NumberTest 클래스에서 Test 애너테이션이 붙은 메서드들을 검증한다.")
     @Test
@@ -22,9 +22,9 @@ class TestCasesTest {
         logger.addAppender(listAppender);
 
         listAppender.start();
-        Class<?> testClass = Class.forName("test.domain.NumberTest");
-        TestCases testCases = TestCases.from(testClass);
-        testCases.runTests();
+        Class<?> testClassReflection = Class.forName("test.domain.NumberTest");
+        TestClass testClass = TestClass.from(testClassReflection);
+        testClass.runTests();
 
         List<ILoggingEvent> testLogs = listAppender.list;
         String message = testLogs.get(0).getFormattedMessage();
