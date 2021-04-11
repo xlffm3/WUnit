@@ -12,19 +12,19 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class TestClassTest {
+class TestCasesTest {
 
     @DisplayName("NumberTest 클래스에서 Test 애너테이션이 붙은 메서드들을 검증한다.")
     @Test
     void runTest() throws ClassNotFoundException {
         ListAppender<ILoggingEvent> listAppender = new ListAppender<>();
-        Logger logger = (Logger) LoggerFactory.getLogger(TestClass.class);
+        Logger logger = (Logger) LoggerFactory.getLogger(TestCase.class);
         logger.addAppender(listAppender);
 
         listAppender.start();
-        Class<?> testClassReflection = Class.forName("test.domain.NumberTest");
-        TestClass testClass = new TestClass(testClassReflection);
-        testClass.runTests();
+        Class<?> testClass = Class.forName("test.domain.NumberTest");
+        TestCases testCases = TestCases.from(testClass);
+        testCases.runTests();
 
         List<ILoggingEvent> testLogs = listAppender.list;
         String message = testLogs.get(0).getFormattedMessage();

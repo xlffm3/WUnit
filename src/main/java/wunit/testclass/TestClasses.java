@@ -13,12 +13,12 @@ public class TestClasses {
 
     public static TestClasses from(List<Class<?>> testClasses) {
         List<TestClass> mappedTestClasses = testClasses.stream()
-                .map(TestClass::new)
+                .map(TestClass::from)
                 .collect(Collectors.toList());
         return new TestClasses(mappedTestClasses);
     }
 
-    public void runTests() {
+    public void runAllTests() {
         testClasses.forEach(TestClass::runTests);
     }
 }
