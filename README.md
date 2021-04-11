@@ -14,6 +14,9 @@ I also recoded several chaining methods from AssertJ library to assert simple te
 * ``hasMessage()``
 * ``doesNotThrowAnyException()``
 
+This project was coded in accordance
+with [객체지향 생활 체조 총정리](https://developerfarm.wordpress.com/2012/02/03/object_calisthenics_summary/).
+
 <br>
 
 ---
