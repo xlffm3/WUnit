@@ -1,0 +1,24 @@
+package wunit.assertion;
+
+public class AssertionExceptionWrapper {
+
+    private final RuntimeException runtimeException;
+
+    public AssertionExceptionWrapper(RuntimeException runtimeException) {
+        this.runtimeException = runtimeException;
+    }
+
+    public AssertionExceptionWrapper isInstanceOf(Class<? extends RuntimeException> exceptionClass) {
+        if (runtimeException.getClass() == exceptionClass) {
+            return this;
+        }
+        throw new AssertionFailureException();
+    }
+
+    public AssertionExceptionWrapper hasMessage(String message) {
+        if (runtimeException.getMessage().equals(message)) {
+            return this;
+        }
+        throw new AssertionFailureException();
+    }
+}
