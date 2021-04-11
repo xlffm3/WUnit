@@ -14,7 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class TestClassTest {
 
-    @DisplayName("클래스의 Test 애너테이션이 붙은 메서드들을 검증한다.")
+    @DisplayName("NumberTest 클래스에서 Test 애너테이션이 붙은 메서드들을 검증한다.")
     @Test
     void runTest() throws ClassNotFoundException {
         ListAppender<ILoggingEvent> listAppender = new ListAppender<>();
@@ -22,15 +22,16 @@ class TestClassTest {
         logger.addAppender(listAppender);
 
         listAppender.start();
-        Class<?> testClassReflection = Class.forName("test.domain.PersonTest");
+        Class<?> testClassReflection = Class.forName("test.domain.NumberTest");
         TestClass testClass = new TestClass(testClassReflection);
         testClass.runTests();
 
-        List<ILoggingEvent> list = listAppender.list;
-        String message = list.get(0).getMessage();
-        Level level = list.get(0).getLevel();
+        List<ILoggingEvent> testLogs = listAppender.list;
+        String message = testLogs.get(0).getMessage();
+        Level level = testLogs.get(0).getLevel();
 
-        assertThat(message).isEqualTo("[Test Passed] :: PersonTest - move");
+        assertThat(testLogs).hasSize(5);
+        assertThat(message).isEqualTo("[Test Failed] :: NumberTest - compareFailed");
         assertThat(level).isEqualTo(Level.INFO);
     }
 }

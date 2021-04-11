@@ -19,7 +19,7 @@ class TestClassLoaderTest {
         String domainTestClass = testClasses.get(1).getName();
 
         assertThat(testClasses).hasSize(2);
-        assertThat(controllerTestClass).isEqualTo("test.controller.PersonControllerTest");
-        assertThat(domainTestClass).isEqualTo("test.domain.PersonTest");
+        assertThat(controllerTestClass).isEqualTo("test.controller.NumberControllerTest");
+        assertThat(domainTestClass).isEqualTo("test.domain.NumberTest");
     }
 }
