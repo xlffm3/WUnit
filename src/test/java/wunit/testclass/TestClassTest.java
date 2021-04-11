@@ -23,13 +23,14 @@ class TestClassTest {
         listAppender.start();
 
         TestClass testClass = TestClass.from(Class.forName("test.domain.NumberTest"));
-        testClass.runTests();
+        List<TestCaseResult> testCaseResults = testClass.runTests();
         List<ILoggingEvent> testLogs = listAppender.list;
         String message = testLogs.get(0).getFormattedMessage();
         Level level = testLogs.get(0).getLevel();
 
-        assertThat(testLogs).hasSize(7);
         assertThat(message).isEqualTo("[Test Failed] :: NumberTest - compareFailed");
         assertThat(level).isEqualTo(Level.INFO);
+        assertThat(testCaseResults)
+                .containsExactly(TestCaseResult.FAIL, TestCaseResult.PASS, TestCaseResult.ERROR, TestCaseResult.PASS, TestCaseResult.ERROR);
     }
 }

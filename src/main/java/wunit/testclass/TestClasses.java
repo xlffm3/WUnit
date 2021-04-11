@@ -1,5 +1,6 @@
 package wunit.testclass;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,7 +19,11 @@ public class TestClasses {
         return new TestClasses(mappedTestClasses);
     }
 
-    public void runAllTests() {
-        testClasses.forEach(TestClass::runTests);
+    public VerificationResult runAllTests() {
+        List<TestCaseResult> testCaseResults = testClasses.stream()
+                .map(TestClass::runTests)
+                .flatMap(Collection::stream)
+                .collect(Collectors.toList());
+        return new VerificationResult(testCaseResults);
     }
 }

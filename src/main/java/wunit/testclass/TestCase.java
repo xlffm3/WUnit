@@ -20,23 +20,32 @@ public class TestCase {
         this.method = method;
     }
 
-    public void runTest() {
+    public TestCaseResult runTest() {
         try {
             method.invoke(null);
             LOGGER.info(LOG_FORMAT, "Passed", className, method.getName());
+            return TestCaseResult.PASS;
         } catch (InvocationTargetException invocationTargetException) {
-            logTestResultType(invocationTargetException);
-            LOGGER.info(EXCEPTION_MESSAGE_FORMAT, invocationTargetException.getTargetException().getMessage());
+            return selectTestCaseResultByCause(invocationTargetException);
         } catch (IllegalAccessException illegalAccessException) {
-            LOGGER.info(LOG_FORMAT, "Error", className, method.getName());
+            LOGGER.info(LOG_FORMAT, " Error", className, method.getName());
+            return TestCaseResult.ERROR;
         }
     }
 
-    private void logTestResultType(InvocationTargetException invocationTargetException) {
-        if (invocationTargetException.getTargetException() instanceof AssertionFailureException) {
-            LOGGER.info(LOG_FORMAT, "Failed", className, method.getName());
-            return;
+    private TestCaseResult selectTestCaseResultByCause(InvocationTargetException invocationTargetException) {
+        Throwable targetException = invocationTargetException.getTargetException();
+        String exceptionMessage = targetException.getMessage();
+        if (targetException instanceof AssertionFailureException) {
+            logResultWithExceptionMessage("Failed", exceptionMessage);
+            return TestCaseResult.FAIL;
         }
-        LOGGER.info(LOG_FORMAT, "Error", className, method.getName());
+        logResultWithExceptionMessage(" Error", exceptionMessage);
+        return TestCaseResult.ERROR;
+    }
+
+    public void logResultWithExceptionMessage(String resultType, String exceptionMessage) {
+        LOGGER.info(LOG_FORMAT, resultType, className, method.getName());
+        LOGGER.info(EXCEPTION_MESSAGE_FORMAT, exceptionMessage);
     }
 }

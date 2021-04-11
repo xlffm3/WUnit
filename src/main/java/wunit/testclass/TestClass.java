@@ -22,7 +22,9 @@ public class TestClass {
         return new TestClass(testCases);
     }
 
-    public void runTests() {
-        testCases.forEach(TestCase::runTest);
+    public List<TestCaseResult> runTests() {
+        return testCases.stream()
+                .map(TestCase::runTest)
+                .collect(Collectors.toList());
     }
 }
