@@ -20,12 +20,10 @@ class TestClassTest {
         ListAppender<ILoggingEvent> listAppender = new ListAppender<>();
         Logger logger = (Logger) LoggerFactory.getLogger(TestCase.class);
         logger.addAppender(listAppender);
-
         listAppender.start();
-        Class<?> testClassReflection = Class.forName("test.domain.NumberTest");
-        TestClass testClass = TestClass.from(testClassReflection);
-        testClass.runTests();
 
+        TestClass testClass = TestClass.from(Class.forName("test.domain.NumberTest"));
+        testClass.runTests();
         List<ILoggingEvent> testLogs = listAppender.list;
         String message = testLogs.get(0).getFormattedMessage();
         Level level = testLogs.get(0).getLevel();
