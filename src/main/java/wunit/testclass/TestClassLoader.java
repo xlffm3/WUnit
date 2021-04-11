@@ -1,48 +1,51 @@
 package wunit.testclass;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.List;
 import java.util.Objects;
 
 public class TestClassLoader {
+    private static final String TEST_CLASS_NOT_FOUND = "There are not test classes under specified package name.";
 
     private TestClassLoader() {
     }
 
-    public static List<Class<?>> findTestClasses(String packageName) throws IOException, ClassNotFoundException {
+    public static List<Class<?>> loadTestClasses(String testPackageRootName) throws ClassNotFoundException {
         ClassLoader classLoader = Objects.requireNonNull(TestClassLoader.class.getClassLoader());
-        String packagePath = packageName.replace('.', '/');
-        Enumeration<URL> resources = classLoader.getResources(packagePath);
-        List<File> files = new ArrayList<>();
-        while (resources.hasMoreElements()) {
-            URL url = resources.nextElement();
-            File file = new File(url.getFile());
-            files.add(file);
-        }
-        List<Class<?>> classes = new ArrayList<>();
-        for (File directory : files) {
-            classes.addAll(findClasses(directory, packageName));
-        }
-        return classes;
+        String testPackageRootPath = testPackageRootName.replace('.', '/');
+        URL resource = Objects.requireNonNull(classLoader.getResource(testPackageRootPath), TEST_CLASS_NOT_FOUND);
+        File testPackageRootDirectory = new File(resource.getFile());
+        return findTestClasses(testPackageRootDirectory, testPackageRootName);
     }
 
-    private static List<Class<?>> findClasses(File directory, String packageName) throws ClassNotFoundException {
+    private static List<Class<?>> findTestClasses(File directory, String packageName) throws ClassNotFoundException {
         List<Class<?>> classes = new ArrayList<>();
         if (!directory.exists()) {
             return classes;
         }
         File[] files = directory.listFiles();
         for (File file : files) {
-            if (file.isDirectory()) {
-                classes.addAll(findClasses(file, packageName + "." + file.getName()));
-            } else if (file.getName().endsWith(".class")) {
-                classes.add(Class.forName(packageName + "." + file.getName().substring(0, file.getName().length() - 6)));
-            }
+            examineFileAttribute(file, classes, packageName);
         }
         return classes;
+    }
+
+    private static void examineFileAttribute(File file, List<Class<?>> classes, String packageName) throws ClassNotFoundException {
+        if (file.isDirectory()) {
+            classes.addAll(findTestClasses(file, packageName + "." + file.getName()));
+            return;
+        }
+        if (file.getName().endsWith(".class")) {
+            String className = parseClassName(file, packageName);
+            classes.add(Class.forName(className));
+        }
+    }
+
+    private static String parseClassName(File file, String packageName) {
+        String classFullName = file.getName();
+        String classSimpleName = classFullName.substring(0, classFullName.length() - 6);
+        return packageName + "." + classSimpleName;
     }
 }
