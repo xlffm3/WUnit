@@ -25,9 +25,12 @@ public class TestClass {
     }
 
     private void runEachTest(Method method) {
-        if (!method.isAnnotationPresent(Test.class)) {
-            return;
+        if (method.isAnnotationPresent(Test.class)) {
+            logResult(method);
         }
+    }
+
+    private void logResult(Method method) {
         try {
             method.invoke(null);
             LOGGER.info(LOG_FORMAT, "Passed", testClass.getSimpleName(), method.getName());
