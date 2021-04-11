@@ -27,10 +27,10 @@ class TestClassTest {
         testClass.runTests();
 
         List<ILoggingEvent> testLogs = listAppender.list;
-        String message = testLogs.get(0).getMessage();
+        String message = testLogs.get(0).getFormattedMessage();
         Level level = testLogs.get(0).getLevel();
 
-        assertThat(testLogs).hasSize(5);
+        assertThat(testLogs).hasSize(7);
         assertThat(message).isEqualTo("[Test Failed] :: NumberTest - compareFailed");
         assertThat(level).isEqualTo(Level.INFO);
     }
