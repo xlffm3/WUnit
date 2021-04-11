@@ -1,7 +1,7 @@
 package wunit;
 
-import wunit.testclass.TestClassLoader;
-import wunit.testclass.TestClasses;
+import wunit.testcase.TestClassLoader;
+import wunit.testcase.TestClasses;
 
 public class Application {
 

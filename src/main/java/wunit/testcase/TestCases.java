@@ -1,4 +1,4 @@
-package wunit.testclass;
+package wunit.testcase;
 
 import wunit.annotation.Test;
 
