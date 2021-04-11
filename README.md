@@ -12,6 +12,7 @@ I also recoded several chaining methods from AssertJ library to assert simple te
 * ``assertThatCode()``
 * ``isInstanceOf()``
 * ``hasMessage()``
+* ``doesNotThrowAnyException()``
 
 <br>
 
