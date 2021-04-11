@@ -10,6 +10,8 @@ import java.util.Arrays;
 
 public class TestClass {
     private static final Logger LOGGER = LoggerFactory.getLogger(TestClass.class);
+    private static final String LOG_FORMAT = "[Test {}] :: {} - {}";
+    private static final String EXCEPTION_MESSAGE_FORMAT = "    [Message] :: {}";
 
     private final Class<?> testClass;
 
@@ -28,12 +30,12 @@ public class TestClass {
         }
         try {
             method.invoke(null);
-            LOGGER.info(TestStatus.PASSED.generateLogMessage(testClass.getSimpleName(), method.getName()));
+            LOGGER.info(LOG_FORMAT, "Passed", testClass.getSimpleName(), method.getName());
         } catch (InvocationTargetException invocationTargetException) {
-            LOGGER.info(TestStatus.FAILED.generateLogMessage(testClass.getSimpleName(), method.getName()));
-            LOGGER.info(invocationTargetException.getTargetException().getMessage());
+            LOGGER.info(LOG_FORMAT, "Failed", testClass.getSimpleName(), method.getName());
+            LOGGER.info(EXCEPTION_MESSAGE_FORMAT, invocationTargetException.getTargetException().getMessage());
         } catch (IllegalAccessException illegalAccessException) {
-            LOGGER.info(TestStatus.IGNORED.generateLogMessage(testClass.getSimpleName(), method.getName()));
+            LOGGER.info(LOG_FORMAT, "Ignored", testClass.getSimpleName(), method.getName());
         }
     }
 }
