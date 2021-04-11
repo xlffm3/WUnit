@@ -19,7 +19,4 @@ public class Assertion {
         }
         return new AssertionExceptionWrapper(new NoneException());
     }
-
-    private static class NoneException extends RuntimeException {
-    }
 }

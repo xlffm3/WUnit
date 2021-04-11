@@ -50,4 +50,21 @@ public class NumberControllerTest {
                 .isInstanceOf(IndexOutOfBoundsException.class)
                 .hasMessage("Index: 1, Size: 31");
     }
+
+    @Test
+    public static void doesNotThrowAnyException() {
+        List<Integer> list = new ArrayList<>();
+        list.add(1);
+
+        Assertion.assertThatCode(() -> list.get(0))
+                .doesNotThrowAnyException();
+    }
+
+    @Test
+    public static void throwExceptionActually() {
+        List<Integer> list = new ArrayList<>();
+
+        Assertion.assertThatCode(() -> list.get(0))
+                .doesNotThrowAnyException();
+    }
 }

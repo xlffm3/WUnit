@@ -21,4 +21,10 @@ public class AssertionExceptionWrapper {
         }
         throw new AssertionFailureException(message, runtimeException.getMessage());
     }
+
+    public void doesNotThrowAnyException() {
+        if (runtimeException.getClass() != NoneException.class) {
+            throw new AssertionFailureException("None", runtimeException.getClass().getSimpleName());
+        }
+    }
 }
