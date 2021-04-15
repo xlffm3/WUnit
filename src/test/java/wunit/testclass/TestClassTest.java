@@ -16,7 +16,7 @@ class TestClassTest {
 
     @DisplayName("NumberTest 클래스에서 Test 애너테이션이 붙은 메서드들을 검증한다.")
     @Test
-    void runTest() throws ClassNotFoundException {
+    void runTests() throws ClassNotFoundException {
         ListAppender<ILoggingEvent> listAppender = new ListAppender<>();
         Logger logger = (Logger) LoggerFactory.getLogger(TestCase.class);
         logger.addAppender(listAppender);
