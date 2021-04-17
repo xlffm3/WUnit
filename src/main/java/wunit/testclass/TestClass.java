@@ -2,6 +2,8 @@ package wunit.testclass;
 
 import wunit.annotation.Test;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,9 +19,19 @@ public class TestClass {
     public static TestClass from(Class<?> testClass) {
         List<TestCase> testCases = Arrays.stream(testClass.getDeclaredMethods())
                 .filter(method -> method.isAnnotationPresent(Test.class))
-                .map(method -> new TestCase(testClass.getSimpleName(), method))
+                .map(method -> new TestCase(testClass.getSimpleName(), createObjectByTypeToken(testClass), method))
                 .collect(Collectors.toList());
         return new TestClass(testCases);
+    }
+
+    private static Object createObjectByTypeToken(Class<?> testClass) {
+        try {
+            Constructor<?> declaredConstructor = testClass.getDeclaredConstructor();
+            return declaredConstructor.newInstance(null);
+        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+        }
+
+        throw new AssertionError();
     }
 
     public List<TestCaseResult> runTests() {

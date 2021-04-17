@@ -13,16 +13,18 @@ public class TestCase {
     private static final String EXCEPTION_MESSAGE_FORMAT = "    [Message] :: {}";
 
     private final String className;
+    private final Object object;
     private final Method method;
 
-    public TestCase(String className, Method method) {
+    public TestCase(String className, Object object, Method method) {
         this.className = className;
+        this.object = object;
         this.method = method;
     }
 
     public TestCaseResult runTest() {
         try {
-            method.invoke(null);
+            method.invoke(object);
             LOGGER.info(LOG_FORMAT, "Passed", className, method.getName());
             return TestCaseResult.PASS;
         } catch (InvocationTargetException invocationTargetException) {
