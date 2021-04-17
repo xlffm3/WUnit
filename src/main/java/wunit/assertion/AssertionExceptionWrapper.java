@@ -1,30 +1,36 @@
 package wunit.assertion;
 
+import java.util.Optional;
+
 public class AssertionExceptionWrapper {
 
-    private final RuntimeException runtimeException;
+    private final Optional<Throwable> throwable;
 
-    public AssertionExceptionWrapper(RuntimeException runtimeException) {
-        this.runtimeException = runtimeException;
+    public AssertionExceptionWrapper(Throwable throwable) {
+        this.throwable = Optional.ofNullable(throwable);
     }
 
-    public AssertionExceptionWrapper isInstanceOf(Class<? extends RuntimeException> exceptionClass) {
-        if (runtimeException.getClass() == exceptionClass) {
+    public AssertionExceptionWrapper() {
+        this(null);
+    }
+
+    public AssertionExceptionWrapper isInstanceOf(Class<? extends Throwable> exceptionClass) {
+        if (throwable.isPresent() && throwable.get().getClass() == exceptionClass) {
             return this;
         }
-        throw new AssertionFailureException(exceptionClass.getSimpleName(), runtimeException.getClass().getSimpleName());
+        throw new AssertionFailureException(exceptionClass.getSimpleName(), throwable.getClass().getSimpleName());
     }
 
     public AssertionExceptionWrapper hasMessage(String message) {
-        if (runtimeException.getMessage().equals(message)) {
+        if (throwable.isPresent() && throwable.get().getMessage().equals(message)) {
             return this;
         }
-        throw new AssertionFailureException(message, runtimeException.getMessage());
+        throw new AssertionFailureException(message, throwable.orElseGet(Throwable::new).getMessage());
     }
 
     public void doesNotThrowAnyException() {
-        if (runtimeException.getClass() != NoneException.class) {
-            throw new AssertionFailureException("None", runtimeException.getClass().getSimpleName());
+        if (throwable.isPresent()) {
+            throw new AssertionFailureException("None", throwable.getClass().getSimpleName());
         }
     }
 }
