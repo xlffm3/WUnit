@@ -4,10 +4,10 @@ import java.util.Optional;
 
 public class AssertionExceptionWrapper {
 
-    private final Optional<Throwable> throwable;
+    private final RuntimeException runtimeException;
 
-    public AssertionExceptionWrapper(Throwable throwable) {
-        this.throwable = Optional.ofNullable(throwable);
+    public AssertionExceptionWrapper(RuntimeException runtimeException) {
+        this.runtimeException = runtimeException;
     }
 
     public AssertionExceptionWrapper() {
@@ -15,22 +15,22 @@ public class AssertionExceptionWrapper {
     }
 
     public AssertionExceptionWrapper isInstanceOf(Class<? extends Throwable> exceptionClass) {
-        if (throwable.isPresent() && throwable.get().getClass() == exceptionClass) {
+        if (runtimeException != null && runtimeException.getClass() == exceptionClass) {
             return this;
         }
-        throw new AssertionFailureException(exceptionClass.getSimpleName(), throwable.getClass().getSimpleName());
+        throw new AssertionFailureException(exceptionClass.getSimpleName(), runtimeException.getClass().getSimpleName());
     }
 
     public AssertionExceptionWrapper hasMessage(String message) {
-        if (throwable.isPresent() && throwable.get().getMessage().equals(message)) {
+        if (runtimeException != null && runtimeException.getMessage().equals(message)) {
             return this;
         }
-        throw new AssertionFailureException(message, throwable.orElseGet(Throwable::new).getMessage());
+        throw new AssertionFailureException(message, Optional.ofNullable(runtimeException).orElseGet(RuntimeException::new).getMessage());
     }
 
     public void doesNotThrowAnyException() {
-        if (throwable.isPresent()) {
-            throw new AssertionFailureException("None", throwable.getClass().getSimpleName());
+        if (runtimeException != null) {
+            throw new AssertionFailureException("None", runtimeException.getClass().getSimpleName());
         }
     }
 }
