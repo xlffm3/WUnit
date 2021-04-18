@@ -1,36 +1,49 @@
 package wunit.assertion;
 
-import java.util.Optional;
+import java.util.Objects;
 
 public class AssertionExceptionWrapper {
+    private static final String NONE_EXCEPTION_NAME = "None";
 
-    private final RuntimeException runtimeException;
+    private final RuntimeException actualException;
 
-    public AssertionExceptionWrapper(RuntimeException runtimeException) {
-        this.runtimeException = runtimeException;
+    public AssertionExceptionWrapper(RuntimeException actualException) {
+        this.actualException = actualException;
     }
 
     public AssertionExceptionWrapper() {
         this(null);
     }
 
-    public AssertionExceptionWrapper isInstanceOf(Class<? extends Throwable> exceptionClass) {
-        if (runtimeException != null && runtimeException.getClass() == exceptionClass) {
-            return this;
+    public AssertionExceptionWrapper isInstanceOf(Class<? extends Throwable> expectedExceptionClass) {
+        if (!isExceptionThrown()) {
+            throw new AssertionFailureException(expectedExceptionClass.getSimpleName(), NONE_EXCEPTION_NAME);
         }
-        throw new AssertionFailureException(exceptionClass.getSimpleName(), runtimeException.getClass().getSimpleName());
+        Class<? extends RuntimeException> actualExceptionClass = actualException.getClass();
+        if (actualExceptionClass != expectedExceptionClass) {
+            throw new AssertionFailureException(expectedExceptionClass.getSimpleName(), actualExceptionClass.getSimpleName());
+        }
+        return this;
     }
 
-    public AssertionExceptionWrapper hasMessage(String message) {
-        if (runtimeException != null && runtimeException.getMessage().equals(message)) {
-            return this;
+    private boolean isExceptionThrown() {
+        return !Objects.isNull(actualException);
+    }
+
+    public AssertionExceptionWrapper hasMessage(String expectedMessage) {
+        if (!isExceptionThrown()) {
+            throw new AssertionFailureException(expectedMessage, NONE_EXCEPTION_NAME);
         }
-        throw new AssertionFailureException(message, Optional.ofNullable(runtimeException).orElseGet(RuntimeException::new).getMessage());
+        String actualMessage = actualException.getMessage();
+        if (!actualMessage.equals(expectedMessage)) {
+            throw new AssertionFailureException(expectedMessage, actualMessage);
+        }
+        return this;
     }
 
     public void doesNotThrowAnyException() {
-        if (runtimeException != null) {
-            throw new AssertionFailureException("None", runtimeException.getClass().getSimpleName());
+        if (isExceptionThrown()) {
+            throw new AssertionFailureException(NONE_EXCEPTION_NAME, actualException.getClass().getSimpleName());
         }
     }
 }
