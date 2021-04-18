@@ -17,6 +17,6 @@ public class Assertion {
         } catch (RuntimeException runtimeException) {
             return new AssertionExceptionWrapper(runtimeException);
         }
-        return new AssertionExceptionWrapper(new NoneException());
+        return new AssertionExceptionWrapper();
     }
 }
