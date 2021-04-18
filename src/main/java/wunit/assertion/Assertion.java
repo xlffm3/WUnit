@@ -14,9 +14,9 @@ public class Assertion {
     public static AssertionExceptionWrapper assertThatCode(Runnable runnable) {
         try {
             runnable.run();
+            return new AssertionExceptionWrapper();
         } catch (RuntimeException runtimeException) {
             return new AssertionExceptionWrapper(runtimeException);
         }
-        return new AssertionExceptionWrapper();
     }
 }
