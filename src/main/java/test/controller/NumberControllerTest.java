@@ -10,14 +10,14 @@ import java.util.List;
 public class NumberControllerTest {
 
     @Test
-    public static void validateListSize() {
+    public void validateListSize() {
         List<Integer> list = Arrays.asList(1, 2, 3, 4, 5);
 
         Assertion.assertTrue(list.size() == 5);
     }
 
     @Test
-    public static void validateStringReference() {
+    public void validateStringReference() {
         String a = "a";
         String b = new String("a");
 
@@ -25,7 +25,7 @@ public class NumberControllerTest {
     }
 
     @Test
-    public static void indexOutOfBoundsException() {
+    public void indexOutOfBoundsException() {
         List<Integer> list = new ArrayList<>();
 
         Assertion.assertThatCode(() -> list.get(1))
@@ -34,7 +34,7 @@ public class NumberControllerTest {
     }
 
     @Test
-    public static void wrongException() {
+    public void wrongException() {
         List<Integer> list = new ArrayList<>();
 
         Assertion.assertThatCode(() -> list.get(1))
@@ -43,7 +43,7 @@ public class NumberControllerTest {
     }
 
     @Test
-    public static void wrongExceptionMessage() {
+    public void wrongExceptionMessage() {
         List<Integer> list = new ArrayList<>();
 
         Assertion.assertThatCode(() -> list.get(1))
@@ -52,7 +52,7 @@ public class NumberControllerTest {
     }
 
     @Test
-    public static void doesNotThrowAnyException() {
+    public void doesNotThrowAnyException() {
         List<Integer> list = new ArrayList<>();
         list.add(1);
 
@@ -61,7 +61,7 @@ public class NumberControllerTest {
     }
 
     @Test
-    public static void throwExceptionActually() {
+    public void throwExceptionActually() {
         List<Integer> list = new ArrayList<>();
 
         Assertion.assertThatCode(() -> list.get(0))
