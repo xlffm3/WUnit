@@ -29,9 +29,8 @@ public class TestClass {
             Constructor<?> declaredConstructor = testClass.getDeclaredConstructor();
             return declaredConstructor.newInstance(null);
         } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+            throw new IllegalStateException("Cannot generate test environment.");
         }
-
-        throw new AssertionError();
     }
 
     public List<TestCaseResult> runTests() {
