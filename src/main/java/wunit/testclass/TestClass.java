@@ -19,6 +19,7 @@ public class TestClass {
     public static TestClass from(Class<?> testClass) {
         List<TestCase> testCases = Arrays.stream(testClass.getDeclaredMethods())
                 .filter(method -> method.isAnnotationPresent(Test.class))
+                .map(method -> {method.setAccessible(true); return method;})
                 .map(method -> new TestCase(testClass.getSimpleName(), createObjectByTypeToken(testClass), method))
                 .collect(Collectors.toList());
         return new TestClass(testCases);
@@ -27,7 +28,7 @@ public class TestClass {
     private static Object createObjectByTypeToken(Class<?> testClass) {
         try {
             Constructor<?> declaredConstructor = testClass.getDeclaredConstructor();
-            return declaredConstructor.newInstance(null);
+            return declaredConstructor.newInstance();
         } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
             throw new IllegalStateException("Cannot generate test environment.");
         }
