@@ -2,6 +2,10 @@ package wunit.assertion;
 
 public class Assertion {
 
+    public interface Runnable {
+        void run() throws Throwable;
+    }
+
     private Assertion() {
     }
 
@@ -15,8 +19,8 @@ public class Assertion {
         try {
             runnable.run();
             return new AssertionExceptionWrapper();
-        } catch (RuntimeException runtimeException) {
-            return new AssertionExceptionWrapper(runtimeException);
+        } catch (Throwable throwable) {
+            return new AssertionExceptionWrapper(throwable);
         }
     }
 }
