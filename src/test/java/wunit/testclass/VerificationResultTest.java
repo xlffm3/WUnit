@@ -28,6 +28,6 @@ class VerificationResultTest {
         String formattedMessage = testLogs.get(0).getFormattedMessage();
 
         assertThat(testLogs).hasSize(1);
-        assertThat(formattedMessage).isEqualTo("Total : 12, Passed : 5, Failed : 5, Error : 2");
+        assertThat(formattedMessage).isEqualTo("Total : 12, Passed : 5, Failed : 6, Error : 1");
     }
 }
