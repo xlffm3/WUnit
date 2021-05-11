@@ -34,7 +34,7 @@ public class TestClass {
     private static Object createObjectByTypeToken(Class<?> testClass) {
         try {
             Constructor<?> declaredConstructor = testClass.getDeclaredConstructor();
-            return declaredConstructor.newInstance(null);
+            return declaredConstructor.newInstance();
         } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
             throw new IllegalStateException("Cannot generate test environment.");
         }

@@ -5,9 +5,9 @@ import java.util.Objects;
 public class AssertionExceptionWrapper {
     private static final String NONE_EXCEPTION_NAME = "None";
 
-    private final RuntimeException actualException;
+    private final Throwable actualException;
 
-    public AssertionExceptionWrapper(RuntimeException actualException) {
+    public AssertionExceptionWrapper(Throwable actualException) {
         this.actualException = actualException;
     }
 
@@ -19,7 +19,7 @@ public class AssertionExceptionWrapper {
         if (!isExceptionThrown()) {
             throw new AssertionFailureException(expectedExceptionClass.getSimpleName(), NONE_EXCEPTION_NAME);
         }
-        Class<? extends RuntimeException> actualExceptionClass = actualException.getClass();
+        Class<? extends Throwable> actualExceptionClass = actualException.getClass();
         if (actualExceptionClass != expectedExceptionClass) {
             throw new AssertionFailureException(expectedExceptionClass.getSimpleName(), actualExceptionClass.getSimpleName());
         }
