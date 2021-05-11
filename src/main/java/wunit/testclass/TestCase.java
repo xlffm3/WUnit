@@ -17,6 +17,7 @@ public class TestCase {
     private final Method method;
 
     public TestCase(String className, Object object, Method method) {
+        method.setAccessible(true);
         this.className = className;
         this.object = object;
         this.method = method;
