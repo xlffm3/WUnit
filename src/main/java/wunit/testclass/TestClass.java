@@ -4,11 +4,17 @@ import wunit.annotation.Test;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class TestClass {
+    private static final Function<Method, Method> ACCESSIBLE_MODIFIER = (method) -> {
+        method.setAccessible(true);
+        return method;
+    };
 
     private final List<TestCase> testCases;
 
@@ -19,6 +25,7 @@ public class TestClass {
     public static TestClass from(Class<?> testClass) {
         List<TestCase> testCases = Arrays.stream(testClass.getDeclaredMethods())
                 .filter(method -> method.isAnnotationPresent(Test.class))
+                .map(ACCESSIBLE_MODIFIER)
                 .map(method -> new TestCase(testClass.getSimpleName(), createObjectByTypeToken(testClass), method))
                 .collect(Collectors.toList());
         return new TestClass(testCases);
