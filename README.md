@@ -1,4 +1,4 @@
-# WUnit
+# 🤖 WUnit
 
 WUnit is a simple re-coded JUnit inspired
 by [JUnit A Cook's Tour](http://junit.sourceforge.net/doc/cookstour/cookstour.htm).
